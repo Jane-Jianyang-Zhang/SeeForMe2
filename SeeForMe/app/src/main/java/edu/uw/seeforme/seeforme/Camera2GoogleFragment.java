@@ -42,16 +42,13 @@ import android.hardware.camera2.CaptureRequest;
 import android.hardware.camera2.CaptureResult;
 import android.hardware.camera2.TotalCaptureResult;
 import android.hardware.camera2.params.StreamConfigurationMap;
-import android.media.Image;
 import android.media.ImageReader;
 import android.os.Bundle;
-import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.support.annotation.NonNull;
 import android.support.v13.app.FragmentCompat;
 import android.support.v4.content.ContextCompat;
-import android.util.Base64;
 import android.util.Log;
 import android.util.Size;
 import android.util.SparseIntArray;
@@ -60,7 +57,6 @@ import android.view.Surface;
 import android.view.TextureView;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 import android.widget.Toast;
 import android.os.AsyncTask;
 
@@ -88,7 +84,6 @@ import com.google.api.services.vision.v1.model.BatchAnnotateImagesRequest;
 import com.google.api.services.vision.v1.model.BatchAnnotateImagesResponse;
 import com.google.api.services.vision.v1.model.EntityAnnotation;
 import com.google.api.services.vision.v1.model.Feature;
-import com.google.api.services.vision.v1.model.*;
 
 
 
@@ -373,10 +368,10 @@ public class Camera2GoogleFragment extends Fragment
     private void convertResponseToString(BatchAnnotateImagesResponse response) {
         String message = "I found these things:\n\n";
 
-        List<EntityAnnotation> labels = response.getResponses().get(0).getTextAnnotations();
-        if (labels != null) {
-            for (EntityAnnotation label : labels) {
-                message += label.getDescription();
+        List<EntityAnnotation> texts = response.getResponses().get(0).getTextAnnotations();
+        if (texts != null) {
+            for (EntityAnnotation text : texts) {
+                message += text.getDescription();
                 message += "\n";
             }
         } else {
@@ -491,7 +486,7 @@ public class Camera2GoogleFragment extends Fragment
             activity.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    Toast.makeText(activity, text, Toast.LENGTH_LONG).show();
+                    Toast.makeText(activity, text, Toast.LENGTH_SHORT).show();
                 }
             });
         }
